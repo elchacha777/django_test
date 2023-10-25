@@ -18,17 +18,28 @@ from .serializers import PostSerializer
 @api_view(['GET'])
 def posts_list_api_view(request):
     queryset = Post.objects.all()
-    print(queryset)
-    serializer = PostSerializer(queryset, many=True)  #<QuerySet [<Post: Iphone>]>
-    print(serializer.data)
+    serializer = PostSerializer(queryset, many=True)  
     return Response(serializer.data)
 
-    [
-    {
-        "category": 1,
-        "title": "Iphone",
-        "body": "Good phone",
-        "created_at": "2023-10-24T05:10:55.275222Z"
-    }
-    ]
+
+@api_view(['GET'])
+def post_details_api_view(request, id):
+
+    # 1 вариант
+    # post = Post.objects.get(id=id)
+    # print(post)
+    # serializer = PostSerializer(post)
+    # print(serializer.data)
+
+
+    # 2 вариант
+    try:
+        post = Post.objects.get(id=id)
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+    except Post.DoesNotExist:
+        return Response('no id for this post')
+
+
+
 

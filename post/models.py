@@ -13,7 +13,7 @@ class Category(models.Model):
     
 class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE,
-    blank=True, null=True) 
+    blank=True, null=True, related_name='posts') 
     title = models.CharField(max_length=240)
     body = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

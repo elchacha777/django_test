@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from post.views import posts_list, posts_list_api_view
+from post.views import posts_list, posts_list_api_view, post_details_api_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('listing/', posts_list),
-    path('api/listing/', posts_list_api_view)
+    path('api/listing/', posts_list_api_view),
+    path('api/details/<int:id>/', post_details_api_view)
 ]
+
