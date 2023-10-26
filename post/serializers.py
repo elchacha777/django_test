@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category
+from .models import Category, Post
 
 
 class PostSerializer(serializers.Serializer):
@@ -8,5 +8,17 @@ class PostSerializer(serializers.Serializer):
     body = serializers.CharField(allow_blank=True, allow_null=True)
     created_at = serializers.DateTimeField(read_only=True)
 
+    def create(self, validated_data):
+        print(validated_data)
+        return Post.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        print(instance, 'instance')
+        print(validated_data)
+        instance.category = validated_data.get('category', instance.category)
+        instance.title = validated_data.get('title', instance.title)
+        instance.body = validated_data.get('body', instance.body)
+        instance.save()
+        return instance
 
 
