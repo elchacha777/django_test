@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 # from post.views import posts_list, posts_list_api_view, post_details_api_view, create_post_api_view, delete_post_api_view,update_post_api_view
-from post.views import posts_list, PostListAPIView, PostDetailAPIView, CreatePostAPIView, DeletePostAPIView, UpdatePostAPIView
+# from post.views import posts_list, PostListAPIView, PostDetailAPIView, CreatePostAPIView, DeletePostAPIView, UpdatePostAPIView
+from post.views import posts_list, PostsListAPIView, PostDetailAPIView, CreatePostAPIView, DeletePostAPIView, UpdatePostAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('listing/', posts_list),
@@ -26,10 +27,20 @@ urlpatterns = [
     # path('api/create/', create_post_api_view),
     # path('api/delete/<int:id>/', delete_post_api_view),
     # path('api/update/<int:id>/', update_post_api_view )
-    path('api/listing', PostListAPIView.as_view()),
+    #APIView
+    # path('api/listing', PostListAPIView.as_view()),
+    # path('api/details/<int:id>/', PostDetailAPIView.as_view()),
+    # path('api/create/',CreatePostAPIView.as_view()),
+    # path('api/delete/<int:id>/', DeletePostAPIView.as_view()),
+    # path('api/update/<int:id>/', UpdatePostAPIView.as_view() )
+    #GenericAPIView
+    path('api/listing', PostsListAPIView.as_view()),
     path('api/details/<int:id>/', PostDetailAPIView.as_view()),
-    path('api/create/',CreatePostAPIView.as_view()),
+    path('api/create/', CreatePostAPIView.as_view()),
     path('api/delete/<int:id>/', DeletePostAPIView.as_view()),
-    path('api/update/<int:id>/', UpdatePostAPIView.as_view() )
+    path('api/update/<int:id>/', UpdatePostAPIView.as_view())
+    
+
+
 ]
 

@@ -85,59 +85,104 @@ def posts_list(request):
 #     return Response(serializer.data, status=201)
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from .serializers import PostSerializer
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from django.shortcuts import get_object_or_404
+# from .serializers import PostSerializer
 
 # get post delete put patch
-class PostListAPIView(APIView):
-    def get(self, request):
-        queryset = Post.objects.all()
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
+# class PostListAPIView(APIView):
+#     def get(self, request):
+#         queryset = Post.objects.all()
+#         serializer = PostSerializer(queryset, many=True)
+#         return Response(serializer.data)
     
 
-class PostDetailAPIView(APIView):
-    def get(self, request, id):
-        post = get_object_or_404(Post, id=id)
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
+# class PostDetailAPIView(APIView):
+#     def get(self, request, id):
+#         post = get_object_or_404(Post, id=id)
+#         serializer = PostSerializer(post)
+#         return Response(serializer.data)
 
-class CreatePostAPIView(APIView):
-    def post(self, request):
-        serializer = PostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=201)
+# class CreatePostAPIView(APIView):
+#     def post(self, request):
+#         serializer = PostSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=201)
 
 
-class DeletePostAPIView(APIView):
-    def delete(self, request, id):
-        post = get_object_or_404(Post, id=id)
-        post.delete()
-        return Response(status=204)
+# class DeletePostAPIView(APIView):
+#     def delete(self, request, id):
+#         post = get_object_or_404(Post, id=id)
+#         post.delete()
+#         return Response(status=204)
         
 
-class UpdatePostAPIView(APIView):
-    def put(self, request, id):
-        post = get_object_or_404(Post, id=id)
-        seralizer = PostSerializer(post, data=request.data)
-        seralizer.is_valid(raise_exception=True)
-        seralizer.save()
-        return Response(seralizer.data, status=201)
+# class UpdatePostAPIView(APIView):
+#     def put(self, request, id):
+#         post = get_object_or_404(Post, id=id)
+#         seralizer = PostSerializer(post, data=request.data)
+#         seralizer.is_valid(raise_exception=True)
+#         seralizer.save()
+#         return Response(seralizer.data, status=201)
 
-    def patch(self, request, id):
-        post = get_object_or_404(Post, id=id)
-        seralizer = PostSerializer(post, data=request.data, partial=True)
-        seralizer.is_valid(raise_exception=True)
-        seralizer.save()
-        return Response(seralizer.data, status=201)
-
-        
+#     def patch(self, request, id):
+#         post = get_object_or_404(Post, id=id)
+#         seralizer = PostSerializer(post, data=request.data, partial=True)
+#         seralizer.is_valid(raise_exception=True)
+#         seralizer.save()
+#         return Response(seralizer.data, status=201)
 
 
-        
+
+#GenericAPIView
+
+
+from rest_framework import generics
+from rest_framework.response import Response
+from .serializers import PostSerializer
+
+class PostsListAPIView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class PostDetailAPIView(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    lookup_field = 'id'
+
+class CreatePostAPIView(generics.CreateAPIView):
+    serializer_class = PostSerializer
+
+
+class DeletePostAPIView(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    lookup_field = 'id'
+
+
+class UpdatePostAPIView(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        if request.method == 'PATCH':
+            kwargs['partial'] == True
+        return super().update(request, *args, **kwargs)
+
+
+
+# class PartialUpdatePostAPIView(generics.UpdateAPIView):
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+#     lookup_field = 'id'
+#     partial = True
+
+
+
+
 
 
 
